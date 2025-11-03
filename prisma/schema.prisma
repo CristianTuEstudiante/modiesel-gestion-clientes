@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  nombre    String
+  doc_id    String   @unique 
+  direccion String?  // El '?' lo hace opcional (nullable)
+
+  // generados por el servidor
+  estado    String   @default("activo")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("clientes") //  tabla 'clientes' (en plural)
+}
