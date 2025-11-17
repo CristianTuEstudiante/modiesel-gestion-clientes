@@ -12,6 +12,7 @@ model Cliente {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   nombre    String
+  password  String   
   doc_id    String   @unique 
   direccion String?  // El '?' lo hace opcional (nullable)
 
@@ -21,4 +22,22 @@ model Cliente {
   updatedAt DateTime @updatedAt
 
   @@map("clientes") //  tabla 'clientes' (en plural)
+
+  
+}
+
+model Proveedor {
+  id          Int      @id @default(autoincrement())
+  ruc         String   @unique
+  razonSocial String
+  email       String   @unique
+  telefono    String?
+  direccion   String?
+  categoria   String?
+  estado      String   @default("activo")
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("proveedores")
 }
