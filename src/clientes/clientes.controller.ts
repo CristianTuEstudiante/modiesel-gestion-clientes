@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param , Patch, Delete, Query, ParseIntPipe, DefaultValuePipe } from '@nestjs/common';
 import { ClientesService } from './clientes.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
+import { UpdateClienteDto } from './dto/update-cliente.dto';
 
 @Controller('clientes')
 export class ClientesController {
@@ -12,10 +13,25 @@ export class ClientesController {
     }
 
     @Get(':id')
-  findOne(@Param('id') id: string) {
+    findOne(@Param('id') id: string) {
+      return this.clientesService.findOne(id);
+    }
+
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
+      return this.clientesService.update(id, updateClienteDto);
+    }
     
-    return this.clientesService.findOne(id);
-  }
-
-
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+      return this.clientesService.remove(id);
+    }
+    @Get() 
+    findAll(
+      // Si no envían 'page', asumimos 1. ParseIntPipe convierte el string "1" a número 1
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+      @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    ) {
+      return this.clientesService.findAll(page, limit);
+    }
 }
